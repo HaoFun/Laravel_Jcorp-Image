@@ -47,44 +47,6 @@
             ysize = $pcnt.height();
         $(document).ready(function()
         {
-            if($(window).width()<=1200)
-            {
-                swal({
-                    type: "warning",
-                    title:"不支援屏幕小於1200編輯"});
-                setTimeout("changeurl()",2500);
-            }
-            if($(window).width()<=1500)
-            {
-                $('#preview-pane').removeClass('show');
-                $('#preview-pane').addClass('hidden');
-            }
-            else
-            {
-                $('#preview-pane').removeClass('hidden');
-                $('#preview-pane').addClass('show');
-            }
-            $(window).resize(function()
-            {
-                if ($(window).width() <=1200)
-                {
-                    swal({
-                        type: "warning",
-                        title:"不支援屏幕小於1200編輯"});
-                    setTimeout("changeurl()",2500);
-                }
-                if($(window).width()<=1500)
-                {
-                    $('#preview-pane').removeClass('show');
-                    $('#preview-pane').addClass('hidden');
-                }
-                else
-                {
-                    $('#preview-pane').removeClass('hidden');
-                    $('#preview-pane').addClass('show');
-                }
-            });
-
             $('#image').Jcrop({
                 bgFade:     true,
                 bgOpacity: 0.09,
@@ -136,7 +98,7 @@
         };
         function changeurl()
         {
-            window.location = 'http://ropotaxi.app/admin';
+            window.location = 'http://localhost:8000';
         }
     </script>
 @endsection
