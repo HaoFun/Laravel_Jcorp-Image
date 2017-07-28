@@ -20,21 +20,18 @@ class ImageController extends Controller
      */
     protected function imageupdate(StoreImageRequest $request)
     {
-        $x = $request->get('x');
-        $y = $request->get('y');
-        $w = $request->get('w');
-        $h = $request->get('h');
-        $image = substr($request->get('image_update'),1);
-        $targ_w =900;
-        $targ_h = 900/$request->width*$request->height;
-        $jpeg_quality = 100;
-        Image::make($image)->resize(900,null, function ($constraint) {$constraint->aspectRatio();})->save($image);
-        $img_r = imagecreatefromjpeg($image);
-        $dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
-        imagecopyresampled($dst_r,$img_r,0,0,$x,$y,$targ_w,$targ_h,$w,$h);
-        header('Content-type: image/jpeg');
-        imagejpeg($dst_r,$image,$jpeg_quality);
+        $x = (int)$request->get('x');
+        $y = (int)$request->get('y');
+        $w = (int)$request->get('w');
+        $h = (int)$request->get('h');
+        $image = mb_substr($request->get('image_update'),1);
+        $targ_w =Image::make($image)->width();
+        Image::make($image)->crop($w,$h,$x,$y)->resize($targ_w,null, function ($constraint)
+        {
+            $constraint->aspectRatio();
+        })->save();
         flash('裁切圖片成功!')->success();
+//        return '<script type="text/javascript">history.go(-1);</script>';
         return back();
     }
 }

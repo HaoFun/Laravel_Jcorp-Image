@@ -7,7 +7,7 @@
             <div style="margin-top: 10px" class="col-md-12">
                 <div class="col-md-8">
                     @if(!empty($_GET['image']))
-                        <img src="{{ $_GET['image'] }}" width="900"  name="image" id="image" >
+                        <img src="{{ $_GET['image'] }}" width="{{ Image::make(mb_substr($_GET['image'],1))->width() }}"  name="image" id="image" >
                     @endif
                 </div>
                 <div id="preview-pane" class="show">
@@ -47,13 +47,51 @@
             ysize = $pcnt.height();
         $(document).ready(function()
         {
+            if($(window).width()<=1200)
+            {
+                swal({
+                    type: "warning",
+                    title:"不支援屏幕小於1200編輯"});
+                setTimeout("changeurl()",2500);
+            }
+            if($(window).width()<=1500)
+            {
+                $('#preview-pane').removeClass('show');
+                $('#preview-pane').addClass('hidden');
+            }
+            else
+            {
+                $('#preview-pane').removeClass('hidden');
+                $('#preview-pane').addClass('show');
+            }
+            $(window).resize(function()
+            {
+                if ($(window).width() <=1200)
+                {
+                    swal({
+                        type: "warning",
+                        title:"不支援屏幕小於1200編輯"});
+                    setTimeout("changeurl()",2500);
+                }
+                if($(window).width()<=1500)
+                {
+                    $('#preview-pane').removeClass('show');
+                    $('#preview-pane').addClass('hidden');
+                }
+                else
+                {
+                    $('#preview-pane').removeClass('hidden');
+                    $('#preview-pane').addClass('show');
+                }
+            });
 
             $('#image').Jcrop({
                 bgFade:     true,
                 bgOpacity: 0.09,
-                minSize:['640','320'],
+                minSize:['200','200'],
                 onSelect: updateCoords,
                 onChange: updateCoords,
+                setSelect: [200,200,10,10],
                 aspectRatio: xsize/ysize,
             },function() {
                 var bounds = this.getBounds();
@@ -96,6 +134,10 @@
             });
             return false;
         };
+        function changeurl()
+        {
+            window.location = 'http://ropotaxi.app/admin';
+        }
     </script>
 @endsection
 
